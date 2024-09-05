@@ -93,6 +93,9 @@ def brute(param_list):
 
     try:
       webpage.get(args.url)
+
+      found = 0
+
       print("\x1b[36;20m"+"Initiating bruteforce attack"+"\x1b[0m")
       for values in param_list:
         try:
@@ -102,7 +105,8 @@ def brute(param_list):
 
           # Press enter to put in the provided credentials
           webpage.find_element(By.CSS_SELECTOR, value=args.submit).click() if args.submit else webpage.find_element(By.CSS_SELECTOR, value=index).send_keys(Keys.ENTER)
-          logger.info("Tried: "+str(values))
+          # logger.info("Tried: "+str(values))
+          print("Tried: "+str(values),end="\r")
           tried = values
 
           # Just to check if the element is accessible or not
@@ -122,7 +126,7 @@ def brute(param_list):
             sys.exit(0)
 
 
-      print("\x1b[36;20m"+"Attack completed!!") if found == 1 else logger.warning("Password not found!")
+      print("\x1b[36;20m"+"Attack completed!!") if found == 1 else logger.warning("Total "+str(len(param_list))+" attempts. Password not found!")
 
     # If user presses Ctrl+C to interrupt the program
     except KeyboardInterrupt:
@@ -198,7 +202,7 @@ if __name__ == '__main__':
       logger.error("Count has to be specified if only constant params are passed")
       sys.exit(0)
 
-    # CHeck the format of the passed data
+    # Check the format of the passed data
     for i in (args.const):
       if ('::' not in i):
         logger.error("Invalid constant parameter format.")

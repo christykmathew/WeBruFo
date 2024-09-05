@@ -34,11 +34,15 @@ def create_wordlist(var=None,constant=None):
     temp_wordlist = []
     wordlist = []
     if var:
-      for filename in var.values():
-          with open(filename, 'r') as f:
-              lines = [i.rstrip('\n') for i in f.readlines()]
-              temp_wordlist.append(lines)
-      wordlist = list(map(list,zip(*temp_wordlist)))
+      try:
+        for filename in var.values():
+            with open(filename, 'r') as f:
+                lines = [i.rstrip('\n') for i in f.readlines()]
+                temp_wordlist.append(lines)
+        wordlist = list(map(list,zip(*temp_wordlist)))
+      except FileNotFoundError:
+        logger.error(str(filename)+" not found. Provide a valid dictionary file")
+        sys.exit(0)
 
     if constant:
       if not var:
@@ -56,6 +60,7 @@ def create_wordlist(var=None,constant=None):
 def brute(param_list):
     options = webdriver.ChromeOptions()
 
+    # Customise chromedriver flags as required
     options.add_argument("--headless=old")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
@@ -81,9 +86,12 @@ def brute(param_list):
       for i in params_dict.keys():
         driver.find_element(By.CSS_SELECTOR, value=i)
         logger.debug(str(i)+" Parameter found in the webpage")
+      
+      if args.submit:
+        driver.find_element(By.CSS_SELECTOR, value=args.submit)
 
     except selenium.common.exceptions.NoSuchElementException:
-      logger.error("Provided parameters "+str(i)+" not in webpage")
+      logger.error("Provided parameter "+str(i)+" not in webpage")
       sys.exit(0)
 
     logger.debug("Paramater available on the webpage\n")
@@ -105,6 +113,7 @@ def brute(param_list):
 
           # Press enter to put in the provided credentials
           webpage.find_element(By.CSS_SELECTOR, value=args.submit).click() if args.submit else webpage.find_element(By.CSS_SELECTOR, value=index).send_keys(Keys.ENTER)
+          
           # logger.info("Tried: "+str(values))
           print("Tried: "+str(values),end="\r")
           tried = values

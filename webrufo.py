@@ -114,7 +114,7 @@ def brute(param_list):
           # Press enter to put in the provided credentials
           webpage.find_element(By.CSS_SELECTOR, value=args.submit).click() if args.submit else webpage.find_element(By.CSS_SELECTOR, value=index).send_keys(Keys.ENTER)
           
-          # logger.info("Tried: "+str(values))
+          logger.debug("Tried: "+str(values))
           print("Tried: "+str(values),end="\r")
           tried = values
 

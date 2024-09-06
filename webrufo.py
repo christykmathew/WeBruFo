@@ -105,6 +105,9 @@ def brute(param_list):
       found = 0
 
       print("\x1b[36;20m"+"Initiating bruteforce attack"+"\x1b[0m")
+      LINE_UP = '\033[1A'
+      LINE_CLEAR = '\x1b[2K'
+
       for values in param_list:
         try:
           for index,value in zip(selector,values):
@@ -114,15 +117,16 @@ def brute(param_list):
           # Press enter to put in the provided credentials
           webpage.find_element(By.CSS_SELECTOR, value=args.submit).click() if args.submit else webpage.find_element(By.CSS_SELECTOR, value=index).send_keys(Keys.ENTER)
           
-          logger.debug("Tried: "+str(values))
-          print("Tried: "+str(values),end="\r")
+          # logger.debug("Tried: "+str(values)+"\r")
+          print("Tried: "+str(values)+" "*25,end="\r")
+
           tried = values
 
           # Just to check if the element is accessible or not
           webpage.find_element(By.CSS_SELECTOR, value=index)
 
         except selenium.common.exceptions.NoSuchElementException:
-          print("\033[101m"+"Bruteforce successful. Credential combination: "+str(tried)+"\x1b[0m")
+          print("\n\033[101m"+"Bruteforce successful. Credential combination: "+str(tried)+"\x1b[0m")
 
           # Check if resume flag is set
           if args.resume:
@@ -134,8 +138,7 @@ def brute(param_list):
             print("\x1b[36;20m"+"Attack completed!!")
             sys.exit(0)
 
-
-      print("\x1b[36;20m"+"Attack completed!!") if found == 1 else logger.warning("Total "+str(len(param_list))+" attempts. Password not found!")
+      print("\n\x1b[36;20m"+"Attack completed!!") if found == 1 else logger.warning("Total "+str(len(param_list))+" attempts. Password not found!")
 
     # If user presses Ctrl+C to interrupt the program
     except KeyboardInterrupt:
@@ -152,19 +155,24 @@ def brute(param_list):
 
 if __name__ == '__main__':
 
-  print("\x1b[36;20m"+"*********************************")
-  print("*****    Bruteforce Tool    *****")
-  print("*********************************\n\n"+"\x1b[0m")
+  print("""
+     __      __      ___.                 _____       
+    /  \    /  \ ____\_ |_________ __ ___/ ____\____  
+    \   \/\/   // __ \| __ \_  __ \  |  \   __\/  _ \ 
+     \        /\  ___/| \_\ \  | \/  |  /|  | (  <_> )
+      \__/\  /  \___  >___  /__|  |____/ |__|  \____/ 
+           \/       \/    \/                          
+    """)
 
   parser = argparse.ArgumentParser(description="Bruteforce web form fields.")
 
-  parser.add_argument('--resume',action='store_true', help="Continue even after getting valid credentials")
   parser.add_argument("-p", "--params", nargs="+", help="HTTP parameters -p #username=username.txt #password=password.txt")
-  parser.add_argument("-c", "--const", nargs="+", help="Constant parameters. Syntax same as for --params. Use full for Null payload bruteforce/Password spraying etc.")
-  parser.add_argument("--count", type=int, help="Count of null payloads")
-  parser.add_argument('--submit',type=str, help="Optional argument to pass selector of submit button")
+  parser.add_argument("-c", "--const", nargs="+", help="Constant parameters. Syntax same as for --params. Useful for Null payload bruteforce/Password spraying etc.")
+  parser.add_argument("--count", type=int, help="Count of null payloads. To be used when only constant parameters are passed. Usefull for null payload bruteforce.")
+  parser.add_argument('--submit',type=str, help="Optional argument to pass CSS selector for submit button")
+  parser.add_argument('--resume',action='store_true', help="Optional parameter to continue even after getting valid credentials")
   parser.add_argument("-u","--url", type=str, help="Target URL")
-  parser.add_argument("-d", '--debug', help="Print verbose information", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.INFO)
+  parser.add_argument("-d", '--debug', help="Print debug information", action="store_const", dest="loglevel", const=logging.DEBUG, default=logging.INFO)
 
   if len(sys.argv) == 1:  # Check if no arguments were passed
       parser.print_help(sys.stderr)

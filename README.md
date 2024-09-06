@@ -35,7 +35,7 @@ Bruteforce web form fields.
 options:
   -h, --help            show this help message and exit
   -p PARAMS [PARAMS ...], --params PARAMS [PARAMS ...]
-                        HTTP parameters -p '#username'=username.txt '#password'=password.txt
+                        HTTP parameters -p '#username'::username.txt '#password'::password.txt
   -c CONST [CONST ...], --const CONST [CONST ...]
                         Constant parameters. Syntax same as for --params. Useful for Null payload
                         bruteforce/Password spraying etc.

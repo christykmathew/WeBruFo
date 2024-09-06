@@ -166,7 +166,7 @@ if __name__ == '__main__':
 
   parser = argparse.ArgumentParser(description="Bruteforce web form fields.")
 
-  parser.add_argument("-p", "--params", nargs="+", help="HTTP parameters -p #username=username.txt #password=password.txt")
+  parser.add_argument("-p", "--params", nargs="+", help="HTTP parameters -p #username::username.txt #password::password.txt")
   parser.add_argument("-c", "--const", nargs="+", help="Constant parameters. Syntax same as for --params. Useful for Null payload bruteforce/Password spraying etc.")
   parser.add_argument("--count", type=int, help="Count of null payloads. To be used when only constant parameters are passed. Usefull for null payload bruteforce.")
   parser.add_argument('--submit',type=str, help="Optional argument to pass CSS selector for submit button")

@@ -70,10 +70,10 @@ def brute(param_list):
       driver = webdriver.Chrome(options=options)
     except Exception as e:
       logger.debug(e)
-      logger.error("Some Error occured")
+      logger.error("Chrome webdriver initialization error!!")
       sys.exit(0)
 
-    #Check website accessiibility
+    #Check website's accessiibility
     try:
       driver.get(args.url)
       logger.debug("Website accessible. Title: "+str(driver.title)+"\n")
@@ -81,7 +81,7 @@ def brute(param_list):
       logger.error("Website not accessible")
       sys.exit(0)
 
-    # Check if parameters avaialble the webpage
+    # Check if parameters are avaialble in the webpage
     try:
       for i in params_dict.keys():
         driver.find_element(By.CSS_SELECTOR, value=i)

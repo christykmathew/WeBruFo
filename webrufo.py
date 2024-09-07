@@ -146,6 +146,11 @@ def brute(param_list):
       webpage.delete_all_cookies();
       sys.exit(0)
 
+    # To catch ElementNotInteractableException. Example login page in http://testhtml5.vulnweb.com/#/about
+    except selenium.common.exceptions.ElementNotInteractableException:
+      logger.error("The element in not interactable. Possibly the input element is hidden from the webpage on load!!!")
+      sys.exit(0)
+
     # For any other exceptions faced
     except Exception as e:
       logger.debug(e)

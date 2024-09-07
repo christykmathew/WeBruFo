@@ -5,11 +5,12 @@
 * [Introduction](#Introduction)
 * [Dependencies](#Dependencies)
 * [Usage](#Usage)
+* [Limitation](#Limitation)
 
 
 
 ## Introduction
-A simple script to bruteforce web forms. Uses CSS selector to locate the inputs and perform bruteforce. Both credential bruteforce and spraying can be performed using this script. The script is inspired from <a href="https://github.com/maximousblk/callow">Callow</a>. This script works on <b>most</b> of the web forms with any number of inputs, provided the input css selector are passed in the argument. 
+A simple script to bruteforce web forms. Uses CSS selector to locate the inputs and perform bruteforce. Both credential bruteforce and spraying can be performed using this script. The script is inspired from <a href="https://github.com/maximousblk/callow">Callow</a>. This script works on [<b>most*</b>](#Limitation) of the web forms with any number of inputs, provided the input css selector are passed in the argument. The tool is useful in scenario's where burp or hydra cannot be used for bruteforcing http forms.
 
 And as for the name, I was too lazy to think and come up with some cool name...
 
@@ -86,3 +87,6 @@ Tried: ['azureuser', 'testpassword']
 Attack completed!!
 ```
 
+## Limitation
+
+The only limitation identified during the testing till now with the tool is _ElementNotInteractableException_ wherein the passed input element is not visible by default on webpage load. 
